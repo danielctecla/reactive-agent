@@ -4,9 +4,10 @@ import random
 
 class Agent():
     # Constructor
-    def __init__(self):
+    def __init__(self, mainObjects_: list):
         self.col = random.randint(0, m - 1)
         self.row = random.randint(0, n - 1)
+        self.mainObjects = mainObjects_
 
         self.hasItem = False
 
@@ -14,12 +15,15 @@ class Agent():
     def getPosition(self) -> tuple:
         return (self.col, self.row)
     
-    def getHasItem(self) -> bool:
-        return self.hasItem
-    
     def setPosition(self, col: int, row: int) -> None:
         self.col = col
         self.row = row
+
+    def getHasItem(self) -> bool:
+        return self.hasItem
+    
+    def invertHasItem(self) -> None:
+        self.hasItem = not self.hasItem
 
     # Sensors for the agent
     def northSensor(self) -> bool:
@@ -48,10 +52,40 @@ class Agent():
             possibleSteps.append((0, -1))
         return random.choice(possibleSteps)
 
+    def movetoMainObj(self) -> None:
+        posibleSteps = []
+        bestStep = (0, 0)
+        bestDistance = 1000000
+
+        if self.northSensor():
+            posibleSteps.append((-1, 0))
+        if self.southSensor():
+            posibleSteps.append((1, 0))
+        if self.eastSensor():
+            posibleSteps.append((0, 1))
+        if self.westSensor():
+            posibleSteps.append((0, -1))
+
+        for mainObject in self.mainObjects:
+            for row,column in posibleSteps:
+                distance = (abs(mainObject[0] - (self.row + row))**2 + abs(mainObject[1] - (self.col + column))**2) ** 0.5
+                if distance < bestDistance:
+                    bestDistance = distance
+                    bestStep = (row, column)
+        
+        self.setPosition(self.col + bestStep[1], self.row + bestStep[0])
+        
+        if table[self.row][self.col] == 'M':
+            self.invertHasItem()
+
+
     def move(self) -> None:
         if self.hasItem:
-            pass
+            self.movetoMainObj()
         else:
-            step = self.randomStep()
-            self.setPosition(self.col + step[1], self.row + step[0])
+            row,column = self.randomStep()
+            if table[self.row + row][self.col + column] == 'I':
+                self.invertHasItem()
+                table[self.row + row][self.col + column] = ''   
+            self.setPosition(self.col + column, self.row + row)
     
