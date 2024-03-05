@@ -15,18 +15,14 @@ WHITE = (255, 255, 255)
 
 
 table = [['' for _ in range(m)] for _ in range(n)] # 26 rows x 42 columns
-mainObjects = []
 
-def mainObject(num: int) -> None:
-    for i in range(num):
-        row = random.randint(0, n-1)
-        col = random.randint(0, m-1)
-        if table[row][col] == '':
-            table[row][col] = 'M'
-            mainObjects.append((row, col))
-        else:
-            i -= 1
 
+def mainObject() -> None:
+    row = random.randint(0, n-1)
+    col = random.randint(0, m-1)
+    table[row][col] = 'M'
+    return (row, col)
+    
 def obstacle(num: int) -> None:
     for i in range(num):
         row = random.randint(0, n-1)
