@@ -54,7 +54,11 @@ def drawObjects(screen: pg.Surface) -> None:
 def moveAgents(ragents: list, screen: pg.Surface) -> None:
     for ragent in ragents:
         ragent.move()
-        pg.draw.rect(screen, (25,25,112), (ragent.col*25 + 25, ragent.row*25 + 25, 25, 25))
+        if ragent.getHasItem():
+            pg.draw.rect(screen, (204, 255, 51), (ragent.col*25 + 25, ragent.row*25 + 25, 25, 25))
+        else:
+            pg.draw.rect(screen, (30,144,255), (ragent.col*25 + 25, ragent.row*25 + 25, 25, 25))
+        
 
 def updateScreen(screen: pg.Surface, ragents: list) -> None:
     screen.fill((0,0,0))

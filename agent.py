@@ -1,4 +1,4 @@
-from drawScreen import *
+from drawScreen import table, m, n
 import pygame as pg
 import random
 
