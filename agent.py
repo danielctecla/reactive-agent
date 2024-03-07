@@ -52,20 +52,20 @@ class Agent():
             possibleSteps.append((0, 1))
         if self.westSensor():
             possibleSteps.append((0, -1))
-
-        return random.choice(possibleSteps)
+            
+        if len(possibleSteps) > 0:
+            return random.choice(possibleSteps)
+        return (0,0)
 
     def movetoBase(self) -> None:
         possible_moves = []
 
         if self.col < self.base_col:
             if self.eastSensor():
-                print("R sensor")
                 possible_moves.append((0,1))
         elif self.col > self.base_col:
             if self.westSensor():
                 possible_moves.append((0,-1))
-                print("L sensor")
 
         if self.row < self.base_row:
             if self.southSensor():
@@ -85,15 +85,16 @@ class Agent():
     def move(self) -> None:
         if self.getHasItem():
             if table[self.row][self.col] == 'M':
+                print("Item has been delivered")
                 self.invertHasItem()
                 return
                 
-            print("I have an item")
+            
             self.movetoBase()
         else:
             row,column = self.randomStep()
             if table[self.row + row][self.col + column] == 'I':
+                print("Item has been collected")
                 self.invertHasItem()
                 table[self.row + row][self.col + column] = ''   
             self.setPosition(self.col + column, self.row + row)
-    
