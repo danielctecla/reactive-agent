@@ -1,3 +1,8 @@
+# Artificial Intelligence Fundamentals. Reactive Agents
+# Catonga Tecla Daniel Isaí 
+# Hernandez del Angel Erick Gustavo
+# 4BV1
+
 from agent import Agent
 from drawScreen import obstacle, items, updateScreen, mainObject, screenEvents, insertElements
 
