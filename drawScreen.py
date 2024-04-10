@@ -6,6 +6,8 @@ import random
 n = 26 #rows
 m = 42 #columns
 
+pg.font.init() # load fonts
+
 BGPOSITION = (25,25)
 BGSIZE = (25*m,25*n)
 
@@ -16,6 +18,8 @@ BTTNITEM = pg.image.load('images/buttonItem.png')
 BTTNOBS = pg.image.load('images/buttonObs.png')
 BTTNITEMSLCT = pg.image.load('images/buttonItemSelect.png')
 BTTNOBSSLCT = pg.image.load('images/buttonObsSelect.png')
+
+MYFONT = pg.font.SysFont('Arial', 18) # Configure font
 
 table = [['' for _ in range(m)] for _ in range(n)] # 26 rows x 42 columns
 
@@ -47,12 +51,22 @@ def items(num: int) -> None:
 def drawObjects(screen: pg.Surface) -> None:
     for i in range(n):
         for j in range(m):
+            text_surf = None
+            rect = pg.Rect(j*25 + 25, i*25 + 25, 25, 25) 
+
             if table[i][j] == 'M':
-                pg.draw.rect(screen, (255, 0, 0), (j*25 + 25, i*25 + 25, 25, 25))
+                pg.draw.rect(screen, (255, 0, 0), rect)
+                text_surf = MYFONT.render('M', True, (255, 255, 255))
             if table[i][j] == 'O':
-                pg.draw.rect(screen, (0, 0, 0), (j*25 + 25, i*25 + 25, 25, 25))
+                pg.draw.rect(screen, (0, 0, 0), rect)
+                text_surf = None
             if table[i][j] == 'I':
-                pg.draw.rect(screen, (0, 255, 0), (j*25 + 25, i*25 + 25, 25, 25))
+                pg.draw.rect(screen, (0, 255, 0), rect)
+                text_surf = MYFONT.render('I', True, (255, 255, 255))
+
+            if text_surf:
+                text_rect = text_surf.get_rect(center=rect.center)
+                screen.blit(text_surf, text_rect)
 
 def moveAgents(ragents: list, screen: pg.Surface) -> None:
     for ragent in ragents:
