@@ -22,7 +22,7 @@ BTTNOBSSLCT = pg.image.load('images/buttonObsSelect.png')
 
 MYFONT = pg.font.SysFont('Arial', 18) # Configure font
 
-NUM_TUPLE = [2,3,4] # numbers of samples
+NUM_TUPLE = [1,2,3,4] # numbers of samples
 
 table = [['' for _ in range(m)] for _ in range(n)] # 26 rows x 42 columns
 
@@ -121,7 +121,7 @@ def insertElements(bttnItem: bool, bttnObs: bool, event: pg.event):
                 elif table[mrow - 1][mcol - 1] == 'O':
                     table[mrow - 1][mcol - 1] = ''
             elif bttnItem:
-                item = Item(random.choice(NUM_TUPLEM))
+                item = Item(random.choice(NUM_TUPLE))
                 if table[mrow - 1][mcol - 1] == '':
                     table[mrow - 1][mcol - 1] = item
                 elif isinstance(table[mrow - 1][mcol - 1],Item): 
