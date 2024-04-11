@@ -22,18 +22,21 @@ def main() -> None:
     agents = [Agent((rowB,colB)),Agent((rowB,colB))]
     bttnItem = False
     bttnObs = False
+    run = True
 
-    while True:
+    while run:
         clock.tick(13)
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                pg.quit()
+                run = False   
             
             bttnItem, bttnObs = screenEvents(screen, event, bttnItem, bttnObs)
             insertElements(bttnItem, bttnObs, event)
         
         updateScreen(screen, agents, bttnItem, bttnObs)
         pg.display.flip()
+    
+    pg.quit()
 
 
 
