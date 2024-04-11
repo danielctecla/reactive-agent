@@ -1,4 +1,5 @@
 from agent import *
+from item import *
 
 import pygame as pg
 import random
@@ -20,6 +21,8 @@ BTTNITEMSLCT = pg.image.load('images/buttonItemSelect.png')
 BTTNOBSSLCT = pg.image.load('images/buttonObsSelect.png')
 
 MYFONT = pg.font.SysFont('Arial', 18) # Configure font
+
+NUM_TUPLE = [1,2,3,4] # numbers of samples
 
 table = [['' for _ in range(m)] for _ in range(n)] # 26 rows x 42 columns
 
@@ -44,7 +47,8 @@ def items(num: int) -> None:
         row = random.randint(0, n-1)
         col = random.randint(0, m-1)
         if table[row][col] == '':
-            table[row][col] = 'I'
+            item = Item(random.choice(NUM_TUPLE))
+            table[row][col] = item
         else:
             i -= 1
 
@@ -60,9 +64,10 @@ def drawObjects(screen: pg.Surface) -> None:
             if table[i][j] == 'O':
                 pg.draw.rect(screen, (0, 0, 0), rect)
                 text_surf = None
-            if table[i][j] == 'I':
+            if isinstance(table[i][j], Item):
+                num = table[i][j].getNumItem()
                 pg.draw.rect(screen, (0, 255, 0), rect)
-                text_surf = MYFONT.render('I', True, (255, 255, 255))
+                text_surf = MYFONT.render(str(num), True, (255, 255, 255))
 
             if text_surf:
                 text_rect = text_surf.get_rect(center=rect.center)
@@ -116,9 +121,10 @@ def insertElements(bttnItem: bool, bttnObs: bool, event: pg.event):
                 elif table[mrow - 1][mcol - 1] == 'O':
                     table[mrow - 1][mcol - 1] = ''
             elif bttnItem:
+                item = Item(random.choice(NUM_TUPLE))
                 if table[mrow - 1][mcol - 1] == '':
-                    table[mrow - 1][mcol - 1] = 'I'
-                elif table[mrow - 1][mcol - 1] == 'I': 
+                    table[mrow - 1][mcol - 1] = item
+                elif isinstance(table[mrow - 1][mcol - 1],Item): 
                     table[mrow - 1][mcol - 1] = ''
 
 def updateScreen(screen: pg.Surface, ragents: list, bttnItem: bool, bttnObs: bool) -> None:

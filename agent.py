@@ -1,4 +1,5 @@
 from drawScreen import table, m, n
+from item import *
 import pygame as pg
 import random
 
@@ -93,8 +94,13 @@ class Agent():
             self.movetoBase()
         else:
             row,column = self.randomStep()
-            if table[self.row + row][self.col + column] == 'I':
+            if isinstance(table[self.row + row][self.col + column],Item):
+                ref_item = table[self.row + row][self.col + column]
+                num_item = ref_item.getNumItem()
+                num_item -= 1
+                ref_item.setNumItem(num_item)
                 print("Item has been collected")
                 self.invertHasItem()
-                table[self.row + row][self.col + column] = ''   
+                if num_item == 0:
+                    table[self.row + row][self.col + column] = ''   
             self.setPosition(self.col + column, self.row + row)
